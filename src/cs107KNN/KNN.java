@@ -18,6 +18,8 @@ public class KNN {
 			System.out.println(labelsTrain[i]);
 		}
 		
+		System.out.print("Hi");
+		
 		String bits = "10000001";
 		System.out.println("La séquence de bits " + bits + "\n\tinterprétée comme byte non signé donne "
 				+ Helpers.interpretUnsigned(bits) + "\n\tinterpretée comme byte signé donne "
