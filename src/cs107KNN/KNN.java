@@ -10,6 +10,7 @@ public class KNN {
 		// [00101000 | 00010100 | 00001010 | 00000101] = 672401925
 		int result = extractInt(b1, b2, b3, b4);
 		System.out.println(result);
+		int b = 0;
 		
 		byte[] labelsRaw = Helpers.readBinaryFile("datasets/10-per-digit_labels_train");
 		byte[] labelsTrain = parseIDXlabels(labelsRaw);
