@@ -11,30 +11,19 @@ public class KNN {
 		int result = extractInt(b1, b2, b3, b4);
 		System.out.println(result);
 		
-		/*// test parseIDXLabels
-		byte[] labelsRaw = Helpers.readBinaryFile("datasets/10-per-digit_labels_train");
-		byte[] labelsTrain = parseIDXlabels(labelsRaw);
-		System.out.println(labelsTrain.length);
-		for (int i = 0; i < labelsTrain.length; ++i) {
-			System.out.println(labelsTrain[i]);
-		}*/
 		
 		//test parseIDXimages
 		byte[] imagesRaw = Helpers.readBinaryFile("datasets/10-per-digit_images_train");
 		byte[][][] imagesTrain = parseIDXimages(imagesRaw);
 		
 		KNNTest.parsingTest();
+		KNNTest.invertedSimilarityTest();
 		
 		System.out.println("Hi");
 		/** System.out.println(labelsTrain.length); */
 		
 		KNNTest.electLabelTest();
 
-		
-		String bits = "10000001";
-		/**System.out.println("La séquence de bits " + bits + "\n\tinterprétée comme byte non signé donne "
-				+ Helpers.interpretUnsigned(bits) + "\n\tinterpretée comme byte signé donne "
-				+ Helpers.interpretSigned(bits)); */
 		
 	}
 
@@ -100,7 +89,6 @@ public class KNN {
 					}
 				}
 			
-			
 			return img;
 		}
 		return null;
@@ -158,8 +146,75 @@ public class KNN {
 	 * @return the inverted similarity between the two images
 	 */
 	public static float invertedSimilarity(byte[][] a, byte[][] b) {
-		// TODO: Implémenter
-		return 0f;
+
+		float aBarre = moyenne(a);
+		float bBarre = moyenne(b);
+		
+		float num = 0;
+		
+		// calcul du numérateur
+		
+		for (int i = 0; i<a.length; ++i) {
+			
+			for(int j = 0; j<a[0].length; ++j) {
+				
+				num = num + (a[i][j]-aBarre)*(b[i][j]-bBarre);
+				
+			}
+		}
+		
+		//si le numerateur est nul
+		if(num == 0) { 
+			return 2;
+		}
+		
+		// si le numérateur n'est pas nul
+		
+		float denomin = 0;
+		float denomin1 = 0;
+		float denomin2 = 0;
+		
+		for (int i = 0; i<a.length; ++i) {
+			
+			for(int j = 0; j<a[0].length; ++j) {
+				
+				denomin1 = denomin1 + ((a[i][j]-aBarre)*(a[i][j]-aBarre));
+				
+			}
+		}
+		for (int i = 0; i<b.length; ++i) {
+			
+			for(int j = 0; j<b[0].length; ++j) {
+				
+				denomin2 = denomin2 + ((b[i][j]-bBarre)*(b[i][j]-bBarre));
+				
+			}
+		}
+		
+		denomin = (float) Math.sqrt(denomin1*denomin2);
+		float simi = 1-(num/denomin);
+		
+		return simi;
+	}
+	
+	// methode auxiliaire pour calculer la moyenne d'une image I barre
+	
+	public static float moyenne (byte[][] a) {
+		
+		float partone = 1/(a.length * a[0].length);
+		float parttwo = 0;
+		
+		for (int i = 0; i<a.length; ++i) {
+			
+			for(int j = 0; j<a[0].length; ++j) {
+				
+				parttwo = parttwo + a[i][j];
+				
+			}
+		}
+		
+		float iBarre = partone*parttwo;
+		return iBarre;
 	}
 
 	/**
