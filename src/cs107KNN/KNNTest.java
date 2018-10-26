@@ -37,8 +37,8 @@ public class KNNTest {
 
 	public static void parsingTest() {
 		System.out.println("=== Test parsing ===");
-		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/provided/10-per-digit_images_train"));
-		byte[] labels = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/provided/10-per-digit_labels_train"));
+		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10-per-digit_images_train"));
+		byte[] labels = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
 
 		System.out.println("Number of images: " + images.length);
 		System.out.println("Height: " + images[0].length);

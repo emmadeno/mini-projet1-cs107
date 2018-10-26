@@ -10,16 +10,22 @@ public class KNN {
 		// [00101000 | 00010100 | 00001010 | 00000101] = 672401925
 		int result = extractInt(b1, b2, b3, b4);
 		System.out.println(result);
-		int b = 0;
 		
+		/*// test parseIDXLabels
 		byte[] labelsRaw = Helpers.readBinaryFile("datasets/10-per-digit_labels_train");
 		byte[] labelsTrain = parseIDXlabels(labelsRaw);
 		System.out.println(labelsTrain.length);
 		for (int i = 0; i < labelsTrain.length; ++i) {
 			System.out.println(labelsTrain[i]);
-		}
+		}*/
 		
-		System.out.print("Hi");
+		//test parseIDXimages
+		byte[] imagesRaw = Helpers.readBinaryFile("datasets/10-per-digit_images_train");
+		byte[][][] imagesTrain = parseIDXimages(imagesRaw);
+		
+		KNNTest.parsingTest();
+		
+		System.out.println("Hi");
 		
 		String bits = "10000001";
 		System.out.println("La séquence de bits " + bits + "\n\tinterprétée comme byte non signé donne "
@@ -61,7 +67,37 @@ public class KNN {
 	 * @return A tensor of images
 	 */
 	public static byte[][][] parseIDXimages(byte[] data) {
-		// TODO: Implémenter
+		
+		int magicNumber = extractInt(data[0], data[1], data[2], data[3]);
+		int nbImages = extractInt(data[4], data[5], data[6], data[7]);
+		int hauteur = extractInt(data[8], data[9], data[10], data[11]);
+		int largeur = extractInt(data[12], data[13], data[14], data[15]);
+		
+		byte [][][] img = new byte [nbImages][hauteur][largeur];
+		
+		
+		if(magicNumber == 2051) {
+			
+			//initialisation d'un compteur parcourant data
+			int n = 16;
+		
+				for(int i = 0; i<img.length; ++i) { // nb d'images
+			
+					for(int k = 0; k<img[0].length; ++k) { // parcourir hauteur
+				
+						for(int j = 0; j<img[0][0].length; ++j) { // parcourir largeur
+						
+							byte pixelValue = (byte) ((data[n]& 0xFF)-128); // interpretation du byte en signed
+							img [i][k][j] = pixelValue;
+							++n;
+					
+						}
+					}
+				}
+			
+			
+			return img;
+		}
 		return null;
 	}
 
