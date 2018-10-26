@@ -76,10 +76,10 @@ public class KNNTest {
 
 	public static void indexOfMaxTest() {
 		System.out.println("=== Test indexOfMax ===");
-		int[] data = new int[]{0, 5, 9, 1};
+		int[] data = new int[]{100, 3, 99, 27, 37, 2334, 16, 354, 223, 453};
 
 		int indexOfMax = KNN.indexOfMax(data);
-		System.out.println("Indices: [0, 1, 2, 3]");
+		System.out.println("Indices: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]");
 		System.out.println("Données: " + Arrays.toString(data));
 		System.out.println("L'indice de l'élément maximal est: " + indexOfMax);
 	}

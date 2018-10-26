@@ -10,21 +10,18 @@ public class KNN {
 		// [00101000 | 00010100 | 00001010 | 00000101] = 672401925
 		int result = extractInt(b1, b2, b3, b4);
 		System.out.println(result);
-		int b = 0;
 		
 		byte[] labelsRaw = Helpers.readBinaryFile("datasets/10-per-digit_labels_train");
 		byte[] labelsTrain = parseIDXlabels(labelsRaw);
-		System.out.println(labelsTrain.length);
-		for (int i = 0; i < labelsTrain.length; ++i) {
-			System.out.println(labelsTrain[i]);
-		}
+		/** System.out.println(labelsTrain.length); */
 		
-		System.out.print("Hi");
+		KNNTest.electLabelTest();
 		
 		String bits = "10000001";
-		System.out.println("La séquence de bits " + bits + "\n\tinterprétée comme byte non signé donne "
+		/**System.out.println("La séquence de bits " + bits + "\n\tinterprétée comme byte non signé donne "
 				+ Helpers.interpretUnsigned(bits) + "\n\tinterpretée comme byte signé donne "
-				+ Helpers.interpretSigned(bits));
+				+ Helpers.interpretSigned(bits)); */
+		
 	}
 
 	/**
@@ -40,13 +37,13 @@ public class KNN {
 		int j = 0;
 		String bytesAsString = Helpers.byteToBinaryString(b31ToB24) + Helpers.byteToBinaryString(b23ToB16) + Helpers.byteToBinaryString(b15ToB8) + Helpers.byteToBinaryString(b7ToB0);
 		for (int c = bytesAsString.length(); c > 0; c--) {
-			int num = bytesAsString.charAt(j);
-			if (num == 48) {
+			int num = bytesAsString.charAt(j) - '0';
+			/** if (num == 48) {
 				num = 0;
 			}
 			else if (num == 49) {
 				num = 1;
-			}
+			}*/
 			i += (int) num * Math.pow(2, (c-1));
 			j++;
 		}
@@ -132,8 +129,12 @@ public class KNN {
 	 *         Example: values = quicksortIndices([3, 7, 0, 9]) gives [2, 0, 1, 3]
 	 */
 	public static int[] quicksortIndices(float[] values) {
-		// TODO: Implémenter
-		return null;
+		int[] indices = new int[values.length];
+		for (int i = 0; i < values.length; i++) {
+			indices[i] = i;
+		}
+		quicksortIndices(values, indices, 0, values.length-1);
+		return indices;
 	}
 
 	/**
@@ -146,7 +147,28 @@ public class KNN {
 	 *                to sort
 	 */
 	public static void quicksortIndices(float[] values, int[] indices, int low, int high) {
-		// TODO: Implémenter
+		int l = low;
+		int h = high;
+		float pivot = values[l];
+		while (l <= h) {
+			if (values[l] < pivot) {
+				++l;
+			}
+			else if (values[h] > pivot){
+				--h;
+			}
+			else {
+				swap(l, h, values, indices);
+				++l;
+				--h;
+			}
+		}
+		if (low < h) {
+			quicksortIndices(values, indices, low, h);
+		}
+		if (high > l) {
+			quicksortIndices(values, indices, l, high);
+		}
 	}
 
 	/**
@@ -158,6 +180,12 @@ public class KNN {
 	 */
 	public static void swap(int i, int j, float[] values, int[] indices) {
 		// TODO: Implémenter
+		float a = values[j];
+		values[j] = values[i];
+		values[i] = a;
+		int b = indices[j];
+		indices[j] = indices[i];
+		indices[i] = b;
 	}
 
 	/**
@@ -169,7 +197,13 @@ public class KNN {
 	 */
 	public static int indexOfMax(int[] array) {
 		// TODO: Implémenter
-		return 0;
+		int index = 0;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] > array[index]) {
+				index = i;
+			}
+		}
+		return index;
 	}
 
 	/**
@@ -182,8 +216,14 @@ public class KNN {
 	 * @return the winner of the election
 	 */
 	public static byte electLabel(int[] sortedIndices, byte[] labels, int k) {
-		// TODO: Implémenter
-		return 0;
+		int[] indices = new int[10];
+		for (int i = 0; i <= k && i < sortedIndices.length; i++) {
+			int label = sortedIndices[i];
+			indices[label] += 1;
+		}
+		
+		int votedLabel = indexOfMax(indices);
+		return labels[votedLabel];
 	}
 
 	/**
