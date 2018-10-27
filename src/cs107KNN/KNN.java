@@ -23,6 +23,7 @@ public class KNN {
 		/** System.out.println(labelsTrain.length); */
 		
 		KNNTest.electLabelTest();
+		KNNTest.quicksortTest();
 
 		
 	}
@@ -35,22 +36,21 @@ public class KNN {
 	 * @return the integer having form [ b31ToB24 | b23ToB16 | b15ToB8 | b7ToB0 ]
 	 */
 	public static int extractInt(byte b31ToB24, byte b23ToB16, byte b15ToB8, byte b7ToB0) {
-		// TODO: Implémenter
-		int i = 0;
+
+		int numConverti = 0;  
 		int j = 0;
+		
+		//conversion des 4 bytes en 1 string
 		String bytesAsString = Helpers.byteToBinaryString(b31ToB24) + Helpers.byteToBinaryString(b23ToB16) + Helpers.byteToBinaryString(b15ToB8) + Helpers.byteToBinaryString(b7ToB0);
-		for (int c = bytesAsString.length(); c > 0; c--) {
-			int num = bytesAsString.charAt(j) - '0';
-			/** if (num == 48) {
-				num = 0;
-			}
-			else if (num == 49) {
-				num = 1;
-			}*/
-			i += (int) num * Math.pow(2, (c-1));
+		
+		//parcourir le string de droit à gauche avec i et de gauche à droite avec j
+		for (int i = bytesAsString.length(); i > 0; i--) {
+			
+			int num = bytesAsString.charAt(j) - '0';        //convertir le nombre à l'index j en int
+			numConverti += (int) num * Math.pow(2, (i-1));  // multiplier ce nombre par la puissance de 2 correspondante
 			j++;
 		}
-		return i;
+		return numConverti;
 	}
 
 	/**
@@ -102,19 +102,28 @@ public class KNN {
 	 * @return the parsed labels
 	 */
 	public static byte[] parseIDXlabels(byte[] data) {
+		
+		
 		int magicNumber = extractInt(data[0], data[1], data[2], data[3]);
+		
+		//tester si le magic number correspond bien
 		if (magicNumber == 2049) {
+			
+			
 			int length = extractInt(data[4], data[5], data[6], data[7]);
+			
+			//créer un tableau dont la longueur est celle du nombre d'étiquettes
 			byte[] result = new byte[length];
+			
 			int j = 0;
-			for (int i = 8; i < length + 8; ++i) {
-				result[j] = data[i];
+			for (int i = 8; i < length + 8; ++i) {   
+				result[j] = data[i];                 //stocker les étiquettes dans un tableau
 				++j;
 			}
-			return result;
+			return result;                           //retourne le tableau d'étiquettes
 		}
 		else {
-			return null;
+			return null;                            //retourne null si le magic number ne correspond pas
 		}
 	}
 
@@ -127,12 +136,12 @@ public class KNN {
 	 */
 	public static float squaredEuclideanDistance(byte[][] a, byte[][] b) {
 		// TODO: Implémenter
-		float distance = 0;
-		int h = a.length;
+		float distance = 0;  //initialisation de la distance qui va être incrémentée
+		int h = a.length;    
 		int w = a[0].length;
 		for (int i = 0; i < h-1; i++) {
 			for (int j = 0; j < w-1; j++) {
-				distance += (a[i][j] - b[i][j])*(a[i][j] - b[i][j]);
+				distance += (a[i][j] - b[i][j])*(a[i][j] - b[i][j]);  //formule
 			}
 		}
 		return distance;
@@ -246,6 +255,10 @@ public class KNN {
 	 *                to sort
 	 */
 	public static void quicksortIndices(float[] values, int[] indices, int low, int high) {
+		
+		// utilise l'algorithme quicksort pour trier les valeurs du tableau "values" du plus petit au plus grand
+		// et fait correspondre les indices de ces valeurs qui se trouvent dans "indices"
+		
 		int l = low;
 		int h = high;
 		float pivot = values[l];
@@ -278,7 +291,9 @@ public class KNN {
 	 * @param indices the array of ints whose values are to be swapped
 	 */
 	public static void swap(int i, int j, float[] values, int[] indices) {
-		// TODO: Implémenter
+		
+		//permet d'échanger les valeurs aux indices i et j des tableaux "values" et "indices"
+		
 		float a = values[j];
 		values[j] = values[i];
 		values[i] = a;
