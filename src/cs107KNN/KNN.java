@@ -24,6 +24,8 @@ public class KNN {
 		
 		KNNTest.electLabelTest();
 		KNNTest.quicksortTest();
+		KNNTest.indexOfMaxTest();
+		KNNTest.knnClassifyTest();
 
 		
 	}
@@ -332,7 +334,8 @@ public class KNN {
 	public static byte electLabel(int[] sortedIndices, byte[] labels, int k) {
 		int[] indices = new int[10];
 		for (int i = 0; i <= k && i < sortedIndices.length; i++) {
-			int label = sortedIndices[i];
+			int labelIndex = sortedIndices[i];
+			int label = labels[labelIndex];
 			indices[label] += 1;
 		}
 		
@@ -352,7 +355,22 @@ public class KNN {
 	 */
 	public static byte knnClassify(byte[][] image, byte[][][] trainImages, byte[] trainLabels, int k) {
 		// TODO: Implémenter
-		return 0;
+		
+		float [] classify = new float [trainImages.length];
+		
+		// remplissage du tableau contennant les niveaux de similarité de 2 images
+		for(int i = 0; i<trainImages.length; i++) {
+			
+			//classify[i] = squaredEuclideanDistance(image, trainImages[i]);
+			classify[i] = invertedSimilarity(image, trainImages[i]);
+		}
+		
+		int [] indices = quicksortIndices(classify);
+		//int max = indexOfMax(indices);
+		byte resultat = electLabel(indices,trainLabels,k);
+		
+		
+		return resultat;
 	}
 
 	/**
