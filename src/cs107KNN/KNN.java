@@ -16,15 +16,15 @@ public class KNN {
 		byte[] imagesRaw = Helpers.readBinaryFile("datasets/10-per-digit_images_train");
 		byte[][][] imagesTrain = parseIDXimages(imagesRaw);
 		
-		KNNTest.parsingTest();
-		KNNTest.invertedSimilarityTest();
+		//KNNTest.parsingTest();
+		//KNNTest.invertedSimilarityTest();
 		
 		System.out.println("Hi");
 		/** System.out.println(labelsTrain.length); */
 		
 		KNNTest.electLabelTest();
-		KNNTest.quicksortTest();
-		KNNTest.indexOfMaxTest();
+		//KNNTest.quicksortTest();
+		//KNNTest.indexOfMaxTest();
 		KNNTest.knnClassifyTest();
 
 		
@@ -333,14 +333,16 @@ public class KNN {
 	 */
 	public static byte electLabel(int[] sortedIndices, byte[] labels, int k) {
 		int[] indices = new int[10];
-		for (int i = 0; i <= k && i < sortedIndices.length; i++) {
+		
+		for (int i = 0; i < k && i < sortedIndices.length; i++) {
 			int labelIndex = sortedIndices[i];
 			int label = labels[labelIndex];
 			indices[label] += 1;
 		}
 		
+		
 		int votedLabel = indexOfMax(indices);
-		return labels[votedLabel];
+		return (byte) votedLabel;
 	}
 
 	/**
