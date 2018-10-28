@@ -1,8 +1,10 @@
 package cs107KNN;
 
+import java.util.Arrays;
+
 public class KNN {
 	public static void main(String[] args) {
-		byte b1 = 40; // 00101000
+		/*byte b1 = 40; // 00101000
 		byte b2 = 20; // 00010100
 		byte b3 = 10; // 00001010
 		byte b4 = 5; // 00000101
@@ -11,21 +13,42 @@ public class KNN {
 		int result = extractInt(b1, b2, b3, b4);
 		System.out.println(result);
 		
-		
-		//test parseIDXimages
-		byte[] imagesRaw = Helpers.readBinaryFile("datasets/10-per-digit_images_train");
-		byte[][][] imagesTrain = parseIDXimages(imagesRaw);
-		
 		//KNNTest.parsingTest();
 		//KNNTest.invertedSimilarityTest();
 		
 		System.out.println("Hi");
 		/** System.out.println(labelsTrain.length); */
 		
-		KNNTest.electLabelTest();
+		//KNNTest.electLabelTest();
 		//KNNTest.quicksortTest();
 		//KNNTest.indexOfMaxTest();
+		//KNNTest.knnClassifyTest();
+		//KNNTest.accuracyTest();*/
+		
+		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10-per-digit_images_train"));
+		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
+
+		byte[][][] imagesTest = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10k_images_test"));
+		byte[] labelsTest = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10k_labels_test"));
+		
 		KNNTest.knnClassifyTest();
+	
+		//temps d'execution
+		
+		int TESTS = 100;
+		byte[] predictions = new byte [TESTS];
+		long start = System.currentTimeMillis();
+		for(int i = 0; i<TESTS; ++i) {
+			
+			predictions[i] = knnClassify(imagesTest[i], imagesTrain, labelsTrain, 7);
+			
+		}
+		long end = System.currentTimeMillis();
+		double time = (end-start)/1000d;
+		System.out.println("Accuracy = "+ accuracy(predictions, Arrays.copyOfRange(labelsTest, 0, TESTS)) + " %");
+		System.out.println("Time = "+ time + " seconds");
+		System.out.println("Time per test image = "+(time/TESTS));
+		
 
 		
 	}
@@ -385,6 +408,20 @@ public class KNN {
 	 */
 	public static double accuracy(byte[] predictedLabels, byte[] trueLabels) {
 		// TODO: Implémenter
-		return 0d;
+		
+		double a = 0.0;
+		
+		for(int i = 0; i<trueLabels.length; ++i) {
+			
+			if(predictedLabels[i]==trueLabels[i]) {
+				a = a+1.0;
+			}
+			else {	a = a+ 0.0;	}
+		}
+		
+		a = a/trueLabels.length;
+		
+		return a;
+		
 	}
 }
