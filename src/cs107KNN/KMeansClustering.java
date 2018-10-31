@@ -11,8 +11,16 @@ public class KMeansClustering {
 		int maxIters = 20;
 
 		// TODO: Adaptez les parcours
-		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("TODO_remplacer/1000-per-digit_images_train"));
-		byte[] labels = KNN.parseIDXlabels(Helpers.readBinaryFile("TODO_remplacer/1000-per-digit_labels_train"));
+		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("TODO/10-per-digit_images_train"));
+		byte[] labels = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
+		encodeIDXlabels(labels);
+		System.out.print("\n");
+		
+		byte[] labels2 = (Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
+		for (int i = 0; i < labels2.length; i++) {
+			System.out.print(labels2[i]);
+		}
+		
 
 		byte[][][] reducedImages = KMeansReduce(images, K, maxIters);
 
@@ -46,8 +54,17 @@ public class KMeansClustering {
      * @return the array of bytes ready to be written to an IDX file
      */
 	public static byte[] encodeIDXlabels(byte[] labels) {
-		// TODO: Implémenter
-		return null;
+		int magicNumber = 2049;
+		byte[] encoded = new byte[labels.length + 8];
+		encodeInt(magicNumber, encoded, 0);
+		encodeInt(labels.length, encoded, 4);
+		for (int i = 0; i < labels.length; i++) {
+			encoded[i + 8] = labels[i];
+		}
+		for (int i = 0; i < encoded.length; i++) {
+			System.out.print(encoded[i]);
+		}
+		return encoded;
 	}
 
     /**
@@ -60,7 +77,27 @@ public class KMeansClustering {
      * the others will follow at offset + 1, offset + 2, offset + 3
      */
 	public static void encodeInt(int n, byte[] destination, int offset) {
-		// TODO: Implémenter
+		String numString = "";
+		
+		//convertir n en un nombre binaire sous forme de String
+		
+		for (int i = 31; i  >= 0; --i) {
+			int power = (int) Math.pow(2, i);
+			int reste = n/power;
+			numString += String.valueOf(reste);
+			n = n - (reste * power);;
+		}
+	
+		int k = 0;
+		for (int i = 0; i < numString.length() - 7; i+=8) {
+			
+			//stocker le nombre binaire n dans "destination" sous forme de 4 bytes
+			
+			byte newbyte = Helpers.binaryStringToByte(numString.substring(i, i + 8)); 
+			destination[offset + k] = newbyte;
+			k += 1;
+		}
+
 	}
 
     /**

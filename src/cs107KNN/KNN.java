@@ -25,17 +25,16 @@ public class KNN {
 		//KNNTest.knnClassifyTest();
 		//KNNTest.accuracyTest();*/
 		
-		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10-per-digit_images_train"));
-		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
+		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/5000-per-digit_images_train"));
+		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/5000-per-digit_labels_train"));
 
 		byte[][][] imagesTest = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10k_images_test"));
 		byte[] labelsTest = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10k_labels_test"));
 		
-		KNNTest.knnClassifyTest();
 	
 		//temps d'execution
 		
-		int TESTS = 100;
+		int TESTS = 1000;
 		byte[] predictions = new byte [TESTS];
 		long start = System.currentTimeMillis();
 		for(int i = 0; i<TESTS; ++i) {
@@ -386,8 +385,8 @@ public class KNN {
 		// remplissage du tableau contennant les niveaux de similarité de 2 images
 		for(int i = 0; i<trainImages.length; i++) {
 			
-			//classify[i] = squaredEuclideanDistance(image, trainImages[i]);
-			classify[i] = invertedSimilarity(image, trainImages[i]);
+			classify[i] = squaredEuclideanDistance(image, trainImages[i]);
+			//classify[i] = invertedSimilarity(image, trainImages[i]);
 		}
 		
 		int [] indices = quicksortIndices(classify);
@@ -421,7 +420,7 @@ public class KNN {
 		
 		a = a/trueLabels.length;
 		
-		return a;
+		return a * 100;
 		
 	}
 }

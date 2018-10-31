@@ -97,17 +97,17 @@ public class KNNTest {
 
 	public static void knnClassifyTest() {
 		System.out.println("=== Test predictions ===");
-		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10-per-digit_images_train"));
-		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
+		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/1000-per-digit_images_train"));
+		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/1000-per-digit_labels_train"));
 
 		byte[][][] imagesTest = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10k_images_test"));
 		byte[] labelsTest = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10k_labels_test"));
 
 		byte[] predictions = new byte[60];
 		for (int i = 0; i < 60; i++) {
-			predictions[i] = KNN.knnClassify(imagesTest[i], imagesTrain, labelsTrain, 7);
+			predictions[i] = KNN.knnClassify(imagesTest[i], imagesTrain, labelsTrain, 10);
 		}
-		Helpers.show("Test predictions", imagesTest, predictions, labelsTest, 10, 6);
+		Helpers.show("Test predictions", imagesTest, predictions, labelsTest, 10, 10);
 	}
 
 
