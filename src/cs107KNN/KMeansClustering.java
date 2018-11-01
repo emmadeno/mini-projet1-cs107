@@ -11,7 +11,7 @@ public class KMeansClustering {
 		int maxIters = 20;
 
 		// TODO: Adaptez les parcours
-		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("TODO/10-per-digit_images_train"));
+		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10-per-digit_images_train"));
 		byte[] labels = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
 		encodeIDXlabels(labels);
 		System.out.print("\n");
@@ -152,7 +152,24 @@ public class KMeansClustering {
      *  if j is at position i, then image i belongs to cluster j
      */
 	public static void recomputeCentroids(byte[][][] tensor, byte[][][] centroids, int[] assignments) {
-	}
+		for (int i = 0; i < tensor.length; i++) {
+			ArrayList<byte[][]> cluster = new ArrayList<byte[][]>();
+			for (int j = 0; i < assignments.length; ++j) {
+				if (assignments[j] == i) {
+							cluster.add(tensor[j]);
+						
+					}
+				}
+			for (int x = 0; x < tensor[i].length; x++) {
+				int n = cluster.size();
+				for (int a = 0; a < n; a++) {
+					 
+				}
+			}
+			}
+		}
+	
+	
 
     /**
      * Initializes the centroids and assignments for the algorithm.
