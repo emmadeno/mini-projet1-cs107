@@ -7,16 +7,17 @@ import java.util.ArrayList;
 
 public class KMeansClustering {
 	public static void main(String[] args) {
-		int K = 5000;
-		int maxIters = 20;
+		//int K = 5000;
+		//int maxIters = 20;
 
 		// TODO: Adaptez les parcours
 		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10-per-digit_images_train"));
 		byte[] labels = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
 		encodeIDXlabels(labels);
+		encodeIDXimages(images);
 		System.out.print("\n");
 		
-		byte[] labels2 = (Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
+		/*byte[] labels2 = (Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
 		for (int i = 0; i < labels2.length; i++) {
 			System.out.print(labels2[i]);
 		}
@@ -31,7 +32,7 @@ public class KMeansClustering {
 		}
 
 		Helpers.writeBinaryFile("datasets/reduced10Kto1K_images", encodeIDXimages(reducedImages));
-		Helpers.writeBinaryFile("datasets/reduced10Kto1K_labels", encodeIDXlabels(reducedLabels));
+		Helpers.writeBinaryFile("datasets/reduced10Kto1K_labels", encodeIDXlabels(reducedLabels));*/
 	}
 
     /**
@@ -64,7 +65,11 @@ public class KMeansClustering {
 				}
 			}
 		}
+		for (int i = 250; i < 300; i++) {
+			System.out.print(data[i]);
+			System.out.print(" ");
 		
+		}
 		
 		return data;
 	}
@@ -84,9 +89,9 @@ public class KMeansClustering {
 		for (int i = 0; i < labels.length; i++) {
 			encoded[i + 8] = labels[i];
 		}
-		for (int i = 0; i < encoded.length; i++) {
+		/*for (int i = 0; i < encoded.length; i++) {
 			System.out.print(encoded[i]);
-		}
+		}*/
 		return encoded;
 	}
 
