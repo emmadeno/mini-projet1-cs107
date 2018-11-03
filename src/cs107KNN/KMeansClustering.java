@@ -42,8 +42,31 @@ public class KMeansClustering {
      * @return the array of byte ready to be written to an IDX file
      */
 	public static byte[] encodeIDXimages(byte[][][] images) {
-		// TODO: Implémenter
-		return null;
+		
+		int n=0;
+		int magicNumber = 2051;
+		byte[] data = new byte [images.length*images[0].length*images[0][0].length+16];
+		
+		encodeInt(magicNumber,data,0);//magicnumber
+		encodeInt(images.length,data,4);//nb d'images
+		encodeInt(images[0].length,data,8);//hauteur
+		encodeInt(images[0][0].length,data,12);//largeur
+		
+		for(int i = 0; i<images.length; ++i) { // nb d'images
+			
+			for(int k = 0; k<images[0].length; ++k) { // parcourir hauteur
+		
+				for(int j = 0; j<images[0][0].length; ++j) { // parcourir largeur
+				
+					data [n+16] = images[i][k][j];
+					++n;
+			
+				}
+			}
+		}
+		
+		
+		return data;
 	}
 
     /**

@@ -115,7 +115,9 @@ public class KNN {
 			
 			return img;
 		}
-		return null;
+		else{
+				return null;
+		}
 	}
 
 	/**
@@ -224,11 +226,12 @@ public class KNN {
 			}
 		}
 		
-		denomin = (float) Math.sqrt(denomin1*denomin2);
+		denomin = (float) Math.sqrt(denomin1*denomin2); // convertion du double sqrt en float
 		float simi = 1-(num/denomin);
 		
 		return simi;
 	}
+	
 	
 	// methode auxiliaire pour calculer la moyenne d'une image I barre
 	
@@ -378,7 +381,6 @@ public class KNN {
 	 * @return the label of the image
 	 */
 	public static byte knnClassify(byte[][] image, byte[][][] trainImages, byte[] trainLabels, int k) {
-		// TODO: Implémenter
 		
 		float [] classify = new float [trainImages.length];
 		
@@ -406,7 +408,6 @@ public class KNN {
 	 * @return the accuracy of the predictions. Its value is in [0, 1]
 	 */
 	public static double accuracy(byte[] predictedLabels, byte[] trueLabels) {
-		// TODO: Implémenter
 		
 		double a = 0.0;
 		

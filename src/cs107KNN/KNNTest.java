@@ -107,7 +107,7 @@ public class KNNTest {
 		for (int i = 0; i < 60; i++) {
 			predictions[i] = KNN.knnClassify(imagesTest[i], imagesTrain, labelsTrain, 10);
 		}
-		Helpers.show("Test predictions", imagesTest, predictions, labelsTest, 10, 10);
+		Helpers.show("Test predictions", imagesTest, predictions, labelsTest, 10, 6);
 	}
 
 
