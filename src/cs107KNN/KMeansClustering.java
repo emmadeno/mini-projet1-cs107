@@ -65,11 +65,11 @@ public class KMeansClustering {
 				}
 			}
 		}
-		for (int i = 250; i < 300; i++) {
+		/*for (int i = 250; i < 300; i++) {
 			System.out.print(data[i]);
 			System.out.print(" ");
 		
-		}
+		}*/
 		
 		return data;
 	}
@@ -169,6 +169,32 @@ public class KMeansClustering {
      *  if j is at position i, then image i belongs to cluster j
      */
 	public static void recomputeAssignments(byte[][][] tensor, byte[][][] centroids, int[] assignments) {
+		
+		for(int i =0; i<tensor.length;++i) {
+			
+			float[] distance = new float[centroids.length]; // tab distance qui stock la distance entre l'img i et les centroids
+			
+			for(int j = 0; i<centroids.length;++j) {
+				
+				distance[i] = KNN.squaredEuclideanDistance(tensor[i], centroids[j]);
+				assignments[i]=choose(distance); // assigne à l'image i le centroid qui est le plus proche d'elle
+				
+			}
+		}
+		
+	}
+	
+	public static byte choose(float[] distance) { // choisi le numero du centroid le plus proche 
+		
+			int n = 0;
+			for(int i = 0; i<distance.length;++i) {
+				
+				if(distance[n]> distance[i]) {
+					n = i;
+				}
+			}
+			
+			return (byte)n;
 	}
 
     /**
