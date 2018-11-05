@@ -15,7 +15,33 @@ public class KMeansClustering {
 		byte[] labels = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
 		encodeIDXlabels(labels);
 		encodeIDXimages(images);
-		System.out.print("\n");
+		
+		byte[][][] tensor = new byte[5][2][2];
+		for (int i = 0; i < 5; i++) {
+			for (int x = 0; x < 2; x++) {
+				for(int y = 0; y < 2 ; y++) {
+					tensor[i][x][y] = 1;
+				}
+			}
+		}
+		
+		tensor[2][0][0] = 20;
+		tensor[2][0][1] = 10;
+		tensor[2][1][0] = 15;
+		tensor[2][1][1] = 10;
+		
+		ArrayList<Integer> cluster = new ArrayList<Integer>();
+		cluster.add(0);
+		cluster.add(2);
+		cluster.add(3);
+		int size = 2;
+		byte[][] result = computeMoyenne(cluster, tensor, size);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2 ; j++) {
+				System.out.print(result[i][j]);
+			}
+		}
+		
 		
 		/*byte[] labels2 = (Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
 		for (int i = 0; i < labels2.length; i++) {
@@ -207,21 +233,34 @@ public class KMeansClustering {
      */
 	public static void recomputeCentroids(byte[][][] tensor, byte[][][] centroids, int[] assignments) {
 		for (int i = 0; i < tensor.length; i++) {
-			ArrayList<byte[][]> cluster = new ArrayList<byte[][]>();
+			ArrayList<Integer> cluster = new ArrayList<Integer>();
 			for (int j = 0; i < assignments.length; ++j) {
 				if (assignments[j] == i) {
-							cluster.add(tensor[j]);
-						
+							cluster.add(i);
 					}
 				}
-			for (int x = 0; x < tensor[i].length; x++) {
-				int n = cluster.size();
-				for (int a = 0; a < n; a++) {
-					 
-				}
-			}
 			}
 		}
+	
+	public static byte[][] computeMoyenne(ArrayList cluster, byte[][][] tensor, int size) {
+		byte[][] imageMoyenne = new byte[size][size];
+		int n = cluster.size();
+		for (int i = 0; i < n; i++) {
+			int index = (int) cluster.get(i);
+			for (int x = 0; x < size; x++) {
+				for (int y = 0; y < size; y++) {
+					imageMoyenne[x][y] += tensor[index][x][y];
+				}
+			}
+		}
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				imageMoyenne[x][y] /= n;
+			}
+		}
+		
+		return imageMoyenne;
+	}
 	
 	
 
