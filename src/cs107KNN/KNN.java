@@ -25,8 +25,8 @@ public class KNN {
 		//KNNTest.knnClassifyTest();
 		//KNNTest.accuracyTest();*/
 		
-		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/5000-per-digit_images_train"));
-		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/5000-per-digit_labels_train"));
+		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/1000-per-digit_images_train"));
+		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/1000-per-digit_labels_train"));
 
 		byte[][][] imagesTest = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10k_images_test"));
 		byte[] labelsTest = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10k_labels_test"));
@@ -165,8 +165,8 @@ public class KNN {
 		float distance = 0;  //initialisation de la distance qui va être incrémentée
 		int h = a.length;    
 		int w = a[0].length;
-		for (int i = 0; i < h-1; i++) {
-			for (int j = 0; j < w-1; j++) {
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < w; j++) {
 				distance += (a[i][j] - b[i][j])*(a[i][j] - b[i][j]);  //formule
 			}
 		}
@@ -192,17 +192,12 @@ public class KNN {
 			
 			for(int j = 0; j<a[0].length; ++j) {
 				
-				num = num + (a[i][j]-abBarre[0])*(b[i][j]-abBarre[1]);
+				num += (a[i][j]-abBarre[0])*(b[i][j]-abBarre[1]);
 				
 			}
 		}
 		
-		//si le numerateur est nul
-		if(num == 0) { 
-			return 2;
-		}
-		
-		// si le numérateur n'est pas nul
+		// denomin
 		
 		float denomin = 0;
 		float denomin1 = 0;
@@ -212,7 +207,7 @@ public class KNN {
 			
 			for(int j = 0; j<a[0].length; ++j) {
 				
-				denomin1 = denomin1 + ((a[i][j]-abBarre[0])*(a[i][j]-abBarre[0]));
+				denomin1 += ((a[i][j]-abBarre[0])*(a[i][j]-abBarre[0]));
 				
 			}
 		}
@@ -220,14 +215,20 @@ public class KNN {
 			
 			for(int j = 0; j<b[0].length; ++j) {
 				
-				denomin2 = denomin2 + ((b[i][j]-abBarre[1])*(b[i][j]-abBarre[1]));
+				denomin2 += ((b[i][j]-abBarre[1])*(b[i][j]-abBarre[1]));
 				
 			}
 		}
 		
 		denomin = (float) Math.sqrt(denomin1*denomin2); // convertion du double sqrt en float
-		float simi = 1-(num/denomin);
 		
+		//si le denominateur est nul
+				if(denomin == 0) { 
+					return 2;
+				}
+		
+		float simi = 1-(num/denomin);
+		//System.out.println(abBarre[0]+ " "+ abBarre[1]);
 		return simi;
 	}
 	
@@ -244,20 +245,20 @@ public class KNN {
 	// methode auxiliaire pour calculer la moyenne d'une image I barre
 	public static float barre (byte[][]i) {
 		
-		float partone = 1/(i.length * i[0].length);
+		float partone =(i.length * i[0].length);
 		float parttwo = 0;
 		
 		for (int k = 0; k<i.length; ++k) {
 			
 			for(int j = 0; j<i[0].length; ++j) {
 				
-				parttwo = parttwo + i[k][j];
+				parttwo += i[k][j];
 				
 			}
 		}
 		
 		
-		float iBarre=partone*parttwo;
+		float iBarre=parttwo/partone;
 		
 		return iBarre;
 	}
@@ -401,8 +402,8 @@ public class KNN {
 		// remplissage du tableau contennant les niveaux de similarité de 2 images
 		for(int i = 0; i<trainImages.length; i++) {
 			
-			classify[i] = squaredEuclideanDistance(image, trainImages[i]);
-			//classify[i] = invertedSimilarity(image, trainImages[i]);
+			//classify[i] = squaredEuclideanDistance(image, trainImages[i]);
+			classify[i] = invertedSimilarity(image, trainImages[i]);
 		}
 		
 		int [] indices = quicksortIndices(classify);
