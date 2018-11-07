@@ -16,32 +16,6 @@ public class KMeansClustering {
 		encodeIDXlabels(labels);
 		encodeIDXimages(images);
 		
-		byte[][][] tensor = new byte[5][2][2];
-		for (int i = 0; i < 5; i++) {
-			for (int x = 0; x < 2; x++) {
-				for(int y = 0; y < 2 ; y++) {
-					tensor[i][x][y] = 1;
-				}
-			}
-		}
-		
-		tensor[2][0][0] = 20;
-		tensor[2][0][1] = 10;
-		tensor[2][1][0] = 15;
-		tensor[2][1][1] = 10;
-		
-		ArrayList<Integer> cluster = new ArrayList<Integer>();
-		cluster.add(0);
-		cluster.add(2);
-		cluster.add(3);
-		int size = 2;
-		byte[][] result = computeMoyenne(cluster, tensor, size);
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 2 ; j++) {
-				System.out.print(result[i][j]);
-			}
-		}
-		
 		
 		/*byte[] labels2 = (Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
 		for (int i = 0; i < labels2.length; i++) {
@@ -92,11 +66,6 @@ public class KMeansClustering {
 				}
 			}
 		}
-		/*for (int i = 250; i < 300; i++) {
-			System.out.print(data[i]);
-			System.out.print(" ");
-		
-		}*/
 		
 		return data;
 	}

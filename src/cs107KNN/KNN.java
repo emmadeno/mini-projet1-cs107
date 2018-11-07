@@ -346,7 +346,9 @@ public class KNN {
 	 * @return the index of the largest integer
 	 */
 	public static int indexOfMax(int[] array) {
-		// TODO: Implémenter
+		
+		// retourne l'indice de la plus grande valeur dans un tableau
+		
 		int index = 0;
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] > array[index]) {
@@ -368,12 +370,15 @@ public class KNN {
 	public static byte electLabel(int[] sortedIndices, byte[] labels, int k) {
 		int[] indices = new int[10];
 		
+		//permet aux k étiquettes les plus proches de voter pour le chiffre qu'ils représentent
+		
 		for (int i = 0; i < k && i < sortedIndices.length; i++) {
 			int labelIndex = sortedIndices[i];
 			int label = labels[labelIndex];
 			indices[label] += 1;
 		}
 		
+		//retourne l'étiquette avec le plus de votes
 		
 		int votedLabel = indexOfMax(indices);
 		return (byte) votedLabel;
