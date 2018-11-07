@@ -182,10 +182,9 @@ public class KNN {
 	 */
 	public static float invertedSimilarity(byte[][] a, byte[][] b) {
 
-		float aBarre = moyenne(a);
-		float bBarre = moyenne(b);
+		float[] abBarre = moyenne(a,b); // retourne A barre et B barre sous forme de tableau
 		
-		float num = 0;
+		float num = 0; //numérateur
 		
 		// calcul du numérateur
 		
@@ -193,7 +192,7 @@ public class KNN {
 			
 			for(int j = 0; j<a[0].length; ++j) {
 				
-				num = num + (a[i][j]-aBarre)*(b[i][j]-bBarre);
+				num = num + (a[i][j]-abBarre[0])*(b[i][j]-abBarre[1]);
 				
 			}
 		}
@@ -213,7 +212,7 @@ public class KNN {
 			
 			for(int j = 0; j<a[0].length; ++j) {
 				
-				denomin1 = denomin1 + ((a[i][j]-aBarre)*(a[i][j]-aBarre));
+				denomin1 = denomin1 + ((a[i][j]-abBarre[0])*(a[i][j]-abBarre[0]));
 				
 			}
 		}
@@ -221,7 +220,7 @@ public class KNN {
 			
 			for(int j = 0; j<b[0].length; ++j) {
 				
-				denomin2 = denomin2 + ((b[i][j]-bBarre)*(b[i][j]-bBarre));
+				denomin2 = denomin2 + ((b[i][j]-abBarre[1])*(b[i][j]-abBarre[1]));
 				
 			}
 		}
@@ -233,23 +232,33 @@ public class KNN {
 	}
 	
 	
-	// methode auxiliaire pour calculer la moyenne d'une image I barre
-	
-	public static float moyenne (byte[][] a) {
+	// methode auxiliaire pour rentrer les valeurs des moyennes dans un tableau
+	public static float[] moyenne (byte[][] a, byte [][] b) { 
 		
-		float partone = 1/(a.length * a[0].length);
+		float[] iBarre = new float [2];
+		iBarre[0]= barre(a);
+		iBarre[1]= barre(b);
+		return iBarre;
+	}
+	
+	// methode auxiliaire pour calculer la moyenne d'une image I barre
+	public static float barre (byte[][]i) {
+		
+		float partone = 1/(i.length * i[0].length);
 		float parttwo = 0;
 		
-		for (int i = 0; i<a.length; ++i) {
+		for (int k = 0; k<i.length; ++k) {
 			
-			for(int j = 0; j<a[0].length; ++j) {
+			for(int j = 0; j<i[0].length; ++j) {
 				
-				parttwo = parttwo + a[i][j];
+				parttwo = parttwo + i[k][j];
 				
 			}
 		}
 		
-		float iBarre = partone*parttwo;
+		
+		float iBarre=partone*parttwo;
+		
 		return iBarre;
 	}
 

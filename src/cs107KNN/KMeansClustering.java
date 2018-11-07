@@ -72,7 +72,7 @@ public class KMeansClustering {
 		
 		int n=0;
 		int magicNumber = 2051;
-		byte[] data = new byte [images.length*images[0].length*images[0][0].length+16];
+		byte[] data = new byte [images.length * images[0].length * images[0][0].length + 16];
 		
 		encodeInt(magicNumber,data,0);//magicnumber
 		encodeInt(images.length,data,4);//nb d'images
@@ -85,7 +85,8 @@ public class KMeansClustering {
 		
 				for(int j = 0; j<images[0][0].length; ++j) { // parcourir largeur
 				
-					data [n+16] = images[i][k][j];
+					byte pixelValue = (byte) ((images[i][k][j]& 0xFF)-128);
+					data [n+16] = pixelValue;
 					++n;
 			
 				}
