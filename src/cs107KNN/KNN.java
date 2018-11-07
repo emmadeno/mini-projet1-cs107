@@ -237,32 +237,28 @@ public class KNN {
 	public static float[] moyenne (byte[][] a, byte [][] b) { 
 		
 		float[] iBarre = new float [2];
-		iBarre[0]= barre(a);
-		iBarre[1]= barre(b);
-		return iBarre;
-	}
-	
-	// methode auxiliaire pour calculer la moyenne d'une image I barre
-	public static float barre (byte[][]i) {
 		
-		float partone =(i.length * i[0].length);
-		float parttwo = 0;
+		float partoneA =(a.length * a[0].length);
+		float partoneB =(b.length * b[0].length);
+		float parttwoA = 0;
+		float parttwoB = 0;
 		
-		for (int k = 0; k<i.length; ++k) {
+		for (int k = 0; k<a.length; ++k) {
 			
-			for(int j = 0; j<i[0].length; ++j) {
+			for(int j = 0; j<b[0].length; ++j) {
 				
-				parttwo += i[k][j];
+				parttwoA += a[k][j];
+				parttwoB += b[k][j];
 				
 			}
 		}
 		
 		
-		float iBarre=parttwo/partone;
-		
+		iBarre[0]= parttwoA/partoneA;
+		iBarre[1]= parttwoB/partoneB;
 		return iBarre;
 	}
-
+	
 	/**
 	 * @brief Quicksorts and returns the new indices of each value.
 	 * 
@@ -402,8 +398,8 @@ public class KNN {
 		// remplissage du tableau contennant les niveaux de similarité de 2 images
 		for(int i = 0; i<trainImages.length; i++) {
 			
-			//classify[i] = squaredEuclideanDistance(image, trainImages[i]);
-			classify[i] = invertedSimilarity(image, trainImages[i]);
+			classify[i] = squaredEuclideanDistance(image, trainImages[i]);
+			//classify[i] = invertedSimilarity(image, trainImages[i]);
 		}
 		
 		int [] indices = quicksortIndices(classify);
