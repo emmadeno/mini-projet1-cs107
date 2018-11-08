@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class KMeansClustering {
 	public static void main(String[] args) {
-		//int K = 5000;
-		//int maxIters = 20;
+		int K = 5000;
+		int maxIters = 20;
 
 		// TODO: Adaptez les parcours
 		byte[][][] images = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10-per-digit_images_train"));
@@ -16,11 +16,6 @@ public class KMeansClustering {
 		encodeIDXlabels(labels);
 		encodeIDXimages(images);
 		
-		
-		/*byte[] labels2 = (Helpers.readBinaryFile("datasets/10-per-digit_labels_train"));
-		for (int i = 0; i < labels2.length; i++) {
-			System.out.print(labels2[i]);
-		}
 		
 
 		byte[][][] reducedImages = KMeansReduce(images, K, maxIters);
@@ -32,7 +27,7 @@ public class KMeansClustering {
 		}
 
 		Helpers.writeBinaryFile("datasets/reduced10Kto1K_images", encodeIDXimages(reducedImages));
-		Helpers.writeBinaryFile("datasets/reduced10Kto1K_labels", encodeIDXlabels(reducedLabels));*/
+		Helpers.writeBinaryFile("datasets/reduced10Kto1K_labels", encodeIDXlabels(reducedLabels));
 	}
 
     /**
@@ -78,16 +73,19 @@ public class KMeansClustering {
      * @return the array of bytes ready to be written to an IDX file
      */
 	public static byte[] encodeIDXlabels(byte[] labels) {
-		int magicNumber = 2049;
-		byte[] encoded = new byte[labels.length + 8];
+		
+		int magicNumber = 2049; //magic number
+		
+		byte[] encoded = new byte[labels.length + 8]; //crée le tableau a retourner
+		
+		//code le magicnumber et le nombre d'étiquettes en byte et rempli le tableau
+		
 		encodeInt(magicNumber, encoded, 0);
 		encodeInt(labels.length, encoded, 4);
 		for (int i = 0; i < labels.length; i++) {
 			encoded[i + 8] = labels[i];
 		}
-		/*for (int i = 0; i < encoded.length; i++) {
-			System.out.print(encoded[i]);
-		}*/
+
 		return encoded;
 	}
 
@@ -203,18 +201,33 @@ public class KMeansClustering {
      */
 	public static void recomputeCentroids(byte[][][] tensor, byte[][][] centroids, int[] assignments) {
 		for (int i = 0; i < tensor.length; i++) {
+			
+			//crée un arraylist représentant un cluster
 			ArrayList<Integer> cluster = new ArrayList<Integer>();
 			for (int j = 0; i < assignments.length; ++j) {
 				if (assignments[j] == i) {
 							cluster.add(i);
 					}
 				}
+			
+			//met l'image moyenne aux indices correspondants
+			for (int k = 0; k < cluster.size(); ++k) {
+				centroids[assignments[k]] = computeMoyenne(cluster, tensor, tensor[0].length);
+			}
+			
 			}
 		}
 	
+	
+	//methode auxiliaire permettant de calculer la moyenne des images dans un cluster
+	
 	public static byte[][] computeMoyenne(ArrayList cluster, byte[][][] tensor, int size) {
+		
 		byte[][] imageMoyenne = new byte[size][size];
-		int n = cluster.size();
+		int n = cluster.size(); //taille du cluster
+		
+		//somme des valeurs en x et y des images
+		
 		for (int i = 0; i < n; i++) {
 			int index = (int) cluster.get(i);
 			for (int x = 0; x < size; x++) {
@@ -223,6 +236,9 @@ public class KMeansClustering {
 				}
 			}
 		}
+		
+		//divise par n
+		
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				imageMoyenne[x][y] /= n;

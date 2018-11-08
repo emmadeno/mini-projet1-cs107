@@ -4,29 +4,10 @@ import java.util.Arrays;
 
 public class KNN {
 	public static void main(String[] args) {
-		/*byte b1 = 40; // 00101000
-		byte b2 = 20; // 00010100
-		byte b3 = 10; // 00001010
-		byte b4 = 5; // 00000101
 
-		// [00101000 | 00010100 | 00001010 | 00000101] = 672401925
-		int result = extractInt(b1, b2, b3, b4);
-		System.out.println(result);
 		
-		//KNNTest.parsingTest();
-		//KNNTest.invertedSimilarityTest();
-		
-		System.out.println("Hi");
-		/** System.out.println(labelsTrain.length); */
-		
-		//KNNTest.electLabelTest();
-		//KNNTest.quicksortTest();
-		//KNNTest.indexOfMaxTest();
-		//KNNTest.knnClassifyTest();
-		//KNNTest.accuracyTest();*/
-		
-		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/1000-per-digit_images_train"));
-		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/1000-per-digit_labels_train"));
+		byte[][][] imagesTrain = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/5000-per-digit_images_train"));
+		byte[] labelsTrain = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/5000-per-digit_labels_train"));
 
 		byte[][][] imagesTest = KNN.parseIDXimages(Helpers.readBinaryFile("datasets/10k_images_test"));
 		byte[] labelsTest = KNN.parseIDXlabels(Helpers.readBinaryFile("datasets/10k_labels_test"));
@@ -270,6 +251,9 @@ public class KNN {
 	 *         Example: values = quicksortIndices([3, 7, 0, 9]) gives [2, 0, 1, 3]
 	 */
 	public static int[] quicksortIndices(float[] values) {
+		
+		//appelle quicksortIndices et retourne les indices triés des éléments du tableau
+		
 		int[] indices = new int[values.length];
 		for (int i = 0; i < values.length; i++) {
 			indices[i] = i;
@@ -398,8 +382,8 @@ public class KNN {
 		// remplissage du tableau contennant les niveaux de similarité de 2 images
 		for(int i = 0; i<trainImages.length; i++) {
 			
-			classify[i] = squaredEuclideanDistance(image, trainImages[i]);
-			//classify[i] = invertedSimilarity(image, trainImages[i]);
+			//classify[i] = squaredEuclideanDistance(image, trainImages[i]);
+			classify[i] = invertedSimilarity(image, trainImages[i]);
 		}
 		
 		int [] indices = quicksortIndices(classify);
