@@ -40,7 +40,7 @@ public class KMeansClustering {
 	public static byte[] encodeIDXimages(byte[][][] images) {
 		
 		int n=0;
-		int magicNumber = 2051;
+		int magicNumber = 2051; // magic number des images
 		byte[] data = new byte [images.length * images[0].length * images[0][0].length + 16];
 		
 		encodeInt(magicNumber,data,0);//magicnumber
@@ -60,6 +60,11 @@ public class KMeansClustering {
 			
 				}
 			}
+		}
+		
+		for (int b = 300; b<350; ++b) {
+			
+			System.out.print(data[b]+" ");
 		}
 		
 		return data;
@@ -177,6 +182,8 @@ public class KMeansClustering {
 		}
 		
 	}
+	
+	// METHODE AUX. pour recomputeAssignments
 	
 	public static byte choose(float[] distance) { // choisi le numero du centroid le plus proche 
 		

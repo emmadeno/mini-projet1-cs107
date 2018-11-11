@@ -25,6 +25,9 @@ public class KNN {
 		}
 		long end = System.currentTimeMillis();
 		double time = (end-start)/1000d;
+		
+		// accuracy + temps d'execution
+		
 		System.out.println("Accuracy = "+ accuracy(predictions, Arrays.copyOfRange(labelsTest, 0, TESTS)) + " %");
 		System.out.println("Time = "+ time + " seconds");
 		System.out.println("Time per test image = "+(time/TESTS));
@@ -67,6 +70,8 @@ public class KNN {
 	 */
 	public static byte[][][] parseIDXimages(byte[] data) {
 		
+		// extraction des parametres des images pour creer le tableau
+		
 		int magicNumber = extractInt(data[0], data[1], data[2], data[3]);
 		int nbImages = extractInt(data[4], data[5], data[6], data[7]);
 		int hauteur = extractInt(data[8], data[9], data[10], data[11]);
@@ -96,7 +101,7 @@ public class KNN {
 			
 			return img;
 		}
-		else{
+		else{ // si le nombre magique n'est pas celui d'une image
 				return null;
 		}
 	}
@@ -173,8 +178,8 @@ public class KNN {
 			
 			for(int j = 0; j<a[0].length; ++j) {
 				
-				num += (a[i][j]-abBarre[0])*(b[i][j]-abBarre[1]);
-				
+				num += (a[i][j]-abBarre[0])*(b[i][j]-abBarre[1]);	// abBarre[0] = moyenne de B
+																	// abBarre[1] = moyenne de A
 			}
 		}
 		
@@ -189,13 +194,6 @@ public class KNN {
 			for(int j = 0; j<a[0].length; ++j) {
 				
 				denomin1 += ((a[i][j]-abBarre[0])*(a[i][j]-abBarre[0]));
-				
-			}
-		}
-		for (int i = 0; i<b.length; ++i) {
-			
-			for(int j = 0; j<b[0].length; ++j) {
-				
 				denomin2 += ((b[i][j]-abBarre[1])*(b[i][j]-abBarre[1]));
 				
 			}
@@ -208,8 +206,8 @@ public class KNN {
 					return 2;
 				}
 		
-		float simi = 1-(num/denomin);
-		//System.out.println(abBarre[0]+ " "+ abBarre[1]);
+		float simi = 1-(num/denomin); // similarité inversée
+		
 		return simi;
 	}
 	
@@ -219,8 +217,8 @@ public class KNN {
 		
 		float[] iBarre = new float [2];
 		
-		float partoneA =(a.length * a[0].length);
-		float partoneB =(b.length * b[0].length);
+		float partoneA =(a.length * a[0].length);// denominateur de A
+		float partoneB =(b.length * b[0].length); // denominateur de B
 		float parttwoA = 0;
 		float parttwoB = 0;
 		
@@ -235,8 +233,9 @@ public class KNN {
 		}
 		
 		
-		iBarre[0]= parttwoA/partoneA;
-		iBarre[1]= parttwoB/partoneB;
+		iBarre[0]= parttwoA/partoneA; // = moyenne de l'image a
+		iBarre[1]= parttwoB/partoneB; // = moyenne de l'image b
+		
 		return iBarre;
 	}
 	
@@ -382,6 +381,9 @@ public class KNN {
 		// remplissage du tableau contennant les niveaux de similarité de 2 images
 		for(int i = 0; i<trainImages.length; i++) {
 			
+			
+			// choix de la methode pour calculer la ressemblence entre les images
+			
 			//classify[i] = squaredEuclideanDistance(image, trainImages[i]);
 			classify[i] = invertedSimilarity(image, trainImages[i]);
 		}
@@ -416,7 +418,7 @@ public class KNN {
 		
 		a = a/trueLabels.length;
 		
-		return a * 100;
+		return a * 100; 
 		
 	}
 }
